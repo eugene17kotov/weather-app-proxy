@@ -7,13 +7,12 @@ const access_key = process.env.API_KEY;
 axios.defaults.baseURL = 'http://api.weatherstack.com';
 
 const proxyController = async (req, res) => {
-    const { query = 'Dnipropetrovsk' } = req.query;
+    const { query } = req.query;
+    !query && (query = 'Kiev');
 
     const params = { access_key, query };
 
     const data = await axios.get('/current', { params });
-
-    console.log(data.data.success);
 
     if (data.data.success === false) {
         throw customError({ status: 400, message: 'Invalid city name' });
